@@ -10151,10 +10151,10 @@ J6aEntryField.place(x=795, y=170)
 
 ### LOAD DEFAULT ###
 
-loadAR4Mk2But = Button(tab3,  text="Load MK3 Defaults",  width=26, command = LoadAR4Mk3default)
+loadAR4Mk2But = Button(tab3,  text="Load SB MK3 Defaults",  width=26, command = LoadAR4Mk3default)
 loadAR4Mk2But.place(x=1150, y=470)
 
-loadAR4Mk2But = Button(tab3,  text="Load MK2 Defaults",  width=26, command = LoadAR4Mk2default)
+loadAR4Mk2But = Button(tab3,  text="Load SB MK2 Defaults",  width=26, command = LoadAR4Mk2default)
 loadAR4Mk2But.place(x=1150, y=510)
 
 loadAR4But = Button(tab3,  text="Load Defaults",  width=26, command = LoadAR4default)
