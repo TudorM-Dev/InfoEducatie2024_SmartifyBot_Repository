@@ -33,8 +33,6 @@ DIR = pathlib.Path(__file__).parent.resolve()
 
 cropping = False
 
-#esti gayyyy
-#FOARTE
 root = Tk()
 root.wm_title("Control Panel V2.1")
 root.iconbitmap(r'GUI_ControlPanelV4\Logo.png')
@@ -201,8 +199,12 @@ nb.add(tab6, text='   Vision    ')
 tab7 = tkinter.ttk.Frame(nb)
 nb.add(tab7, text='    G-Code     ')
 
-tab8 = tkinter.ttk.Frame(nb)
-nb.add(tab8, text='      Log      ')
+# tab8 = tkinter.ttk.Frame(nb)
+# nb.add(tab8, text='     Vision V2     ')
+
+tab9 = tkinter.ttk.Frame(nb)
+nb.add(tab9, text='      Log      ')
+
 
 
 
@@ -240,8 +242,8 @@ def setCom():
     almStatusLab.config(text="SYSTEM READY")
     almStatusLab2.config(text="SYSTEM READY")
     Curtime = datetime.datetime.now().strftime("%B %d %Y - %I:%M%p")
-    tab8.ElogView.insert(END, Curtime+" - COMMUNICATIONS STARTED WITH TEENSY 4.1 CONTROLLER")
-    value=tab8.ElogView.get(0,END)
+    tab9.ElogView.insert(END, Curtime+" - COMMUNICATIONS STARTED WITH TEENSY 4.1 CONTROLLER")
+    value=tab9.ElogView.get(0,END)
     pickle.dump(value,open("ErrorLog","wb"))
     time.sleep(.1)
     ser.flushInput()
@@ -250,8 +252,8 @@ def setCom():
     almStatusLab.config(text="UNABLE TO ESTABLISH COMMUNICATIONS WITH TEENSY 4.1 CONTROLLER")
     almStatusLab2.config(text="UNABLE TO ESTABLISH COMMUNICATIONS WITH TEENSY 4.1 CONTROLLER")
     Curtime = datetime.datetime.now().strftime("%B %d %Y - %I:%M%p")
-    tab8.ElogView.insert(END, Curtime+" - UNABLE TO ESTABLISH COMMUNICATIONS WITH TEENSY 4.1 CONTROLLER")
-    value=tab8.ElogView.get(0,END)
+    tab9.ElogView.insert(END, Curtime+" - UNABLE TO ESTABLISH COMMUNICATIONS WITH TEENSY 4.1 CONTROLLER")
+    value=tab9.ElogView.get(0,END)
     pickle.dump(value,open("ErrorLog","wb"))
 
 
@@ -264,22 +266,22 @@ def setCom2():
     almStatusLab.config(text="SYSTEM READY")
     almStatusLab2.config(text="SYSTEM READY")
     Curtime = datetime.datetime.now().strftime("%B %d %Y - %I:%M%p")
-    tab8.ElogView.insert(END, Curtime+" - COMMUNICATIONS STARTED WITH ARDUINO IO BOARD")
-    value=tab8.ElogView.get(0,END)
+    tab9.ElogView.insert(END, Curtime+" - COMMUNICATIONS STARTED WITH ARDUINO IO BOARD")
+    value=tab9.ElogView.get(0,END)
     pickle.dump(value,open("ErrorLog","wb"))
   except:
     #almStatusLab.config(text="UNABLE TO ESTABLISH COMMUNICATIONS WITH ARDUINO IO BOARD")
     #almStatusLab2.config(text="UNABLE TO ESTABLISH COMMUNICATIONS WITH ARDUINO IO BOARD")
     Curtime = datetime.datetime.now().strftime("%B %d %Y - %I:%M%p")
-    tab8.ElogView.insert(END, Curtime+" - UNABLE TO ESTABLISH COMMUNICATIONS WITH ARDUINO IO BOARD")
-    value=tab8.ElogView.get(0,END)
+    tab9.ElogView.insert(END, Curtime+" - UNABLE TO ESTABLISH COMMUNICATIONS WITH ARDUINO IO BOARD")
+    value=tab9.ElogView.get(0,END)
     pickle.dump(value,open("ErrorLog","wb"))
     
 def darkTheme():
   global curTheme
   curTheme = 0
   # style = ThemedStyle(root)
-  root.tk.call(r"source", r"GUI_ControlPanelV4\\azure.tcl")
+  root.tk.call(r"source", r"azure.tcl")
   root.tk.call("set_theme", r"dark")
 
   # style.configure("Alarm.TLabel", foreground="IndianRed1", font = ('Arial','10','bold'))
@@ -296,12 +298,11 @@ def darkTheme():
   # style.configure('TNotebook.Tab', background='salmon')
   
 def lightTheme():
-  # darkTheme()
-  root.tk.call("source", "azure.tcl")
-  root.tk.call("set_theme", "white")
-  # global curTheme
-  # curTheme = 1
-  # style = ThemedStyle(root)
+  global curTheme
+  curTheme = 0
+  style = ThemedStyle(root)
+  style.set_theme("arc")
+  style = ttk.Style()
   # style.set_theme("keramik")
   # style = ttk.Style()
   # style.configure("Alarm.TLabel", foreground="red", font = ('Arial','10','bold'))
@@ -606,7 +607,7 @@ def executeRow():
         tab1.lastRow = tab1.progView.curselection()[0]
         tab1.lastProg = ProgEntryField.get()
         progIndex = command.find("Prog")
-        progName = str(command[progIndex+5:]) + ".sbot" 
+        progName = "GUI_ControlPanelV4\\" + str(command[progIndex+5:]) + ".sbot" 
         callProg(progName)
         time.sleep(.4) 
         index = 0  
@@ -636,8 +637,8 @@ def executeRow():
       ser3 = serial.Serial(port,baud,timeout=10)
     except:
       Curtime = datetime.datetime.now().strftime("%B %d %Y - %I:%M%p")
-      tab8.ElogView.insert(END, Curtime+" - UNABLE TO ESTABLISH COMMUNICATIONS WITH SERIAL DEVICE")
-      value=tab8.ElogView.get(0,END)
+      tab9.ElogView.insert(END, Curtime+" - UNABLE TO ESTABLISH COMMUNICATIONS WITH SERIAL DEVICE")
+      value=tab9.ElogView.get(0,END)
       pickle.dump(value,open("ErrorLog","wb"))
     ser3.flushInput()
     response = str(ser3.read(charNum).strip(),'utf-8')    
@@ -666,7 +667,7 @@ def executeRow():
         tab1.lastRow = tab1.progView.curselection()[0]
         tab1.lastProg = ProgEntryField.get()
         progIndex = command.find("Prog")
-        progName = str(command[progIndex+5:]) + ".sbot" 
+        progName =  "GUI_ControlPanelV4\\" + str(command[progIndex+5:]) + ".sbot" 
         callProg(progName)
         time.sleep(.4) 
         index = 0  
@@ -697,7 +698,7 @@ def executeRow():
         tab1.lastRow = tab1.progView.curselection()[0]
         tab1.lastProg = ProgEntryField.get()
         progIndex = command.find("Prog")
-        progName = str(command[actionIndex+12:]) + ".sbot" 
+        progName =  "GUI_ControlPanelV4\\" + str(command[actionIndex+12:]) + ".sbot" 
         callProg(progName)
         time.sleep(.4) 
         index = 0  
@@ -4556,8 +4557,8 @@ def TestAuxCom():
     ser3 = serial.Serial(port,baud,timeout=5)
   except:
     Curtime = datetime.datetime.now().strftime("%B %d %Y - %I:%M%p")
-    tab8.ElogView.insert(END, Curtime+" - UNABLE TO ESTABLISH COMMUNICATIONS WITH SERIAL DEVICE")
-    value=tab8.ElogView.get(0,END)
+    tab9.ElogView.insert(END, Curtime+" - UNABLE TO ESTABLISH COMMUNICATIONS WITH SERIAL DEVICE")
+    value=tab9.ElogView.get(0,END)
     pickle.dump(value,open("ErrorLog","wb"))
   ser3.flushInput()
   numChar = int(com3charPortEntryField.get())
@@ -4622,7 +4623,7 @@ def callProg(name):
 
 def CreateProg():
   user_input = simpledialog.askstring(title="New Program", prompt="New Program Name:")
-  file_path = user_input + ".sbot"
+  file_path =  "GUI_ControlPanelV4\\" + user_input + ".sbot"
   with open(file_path,'w', encoding='utf-8') as f:
     f.write("##BEGINNING OF PROGRAM##")
     f.write('\n')
@@ -5120,8 +5121,8 @@ def calRobotAll():
     almStatusLab2.config(text=message)
     ErrorHandler(response)
   Curtime = datetime.datetime.now().strftime("%B %d %Y - %I:%M%p")
-  tab8.ElogView.insert(END, Curtime+" - "+message)
-  value=tab8.ElogView.get(0,END)
+  tab9.ElogView.insert(END, Curtime+" - "+message)
+  value=tab9.ElogView.get(0,END)
   pickle.dump(value,open("ErrorLog","wb")) 
   ##### STAGE 2 ########
   CalStatVal2 = int(J1CalStatVal2)+int(J2CalStatVal2)+int(J3CalStatVal2)+int(J4CalStatVal2)+int(J5CalStatVal2)+int(J6CalStatVal2)
@@ -5145,8 +5146,8 @@ def calRobotAll():
       almStatusLab2.config(text=message)
       ErrorHandler(response)
     Curtime = datetime.datetime.now().strftime("%B %d %Y - %I:%M%p")
-    tab8.ElogView.insert(END, Curtime+" - "+message)
-    value=tab8.ElogView.get(0,END)
+    tab9.ElogView.insert(END, Curtime+" - "+message)
+    value=tab9.ElogView.get(0,END)
     pickle.dump(value,open("ErrorLog","wb")) 
 
 
@@ -5170,8 +5171,8 @@ def calRobotJ1():
     almStatusLab2.config(text=message)
     ErrorHandler(response)
   Curtime = datetime.datetime.now().strftime("%B %d %Y - %I:%M%p")
-  tab8.ElogView.insert(END, Curtime+" - "+message)
-  value=tab8.ElogView.get(0,END)
+  tab9.ElogView.insert(END, Curtime+" - "+message)
+  value=tab9.ElogView.get(0,END)
   pickle.dump(value,open("ErrorLog","wb"))     
 
 def calRobotJ2():
@@ -5194,8 +5195,8 @@ def calRobotJ2():
     almStatusLab2.config(text=message)
     ErrorHandler(response)
   Curtime = datetime.datetime.now().strftime("%B %d %Y - %I:%M%p")
-  tab8.ElogView.insert(END, Curtime+" - "+message)
-  value=tab8.ElogView.get(0,END)
+  tab9.ElogView.insert(END, Curtime+" - "+message)
+  value=tab9.ElogView.get(0,END)
   pickle.dump(value,open("ErrorLog","wb"))     
 
 def calRobotJ3():
@@ -5218,8 +5219,8 @@ def calRobotJ3():
     almStatusLab2.config(text=message)
     ErrorHandler(response)
   Curtime = datetime.datetime.now().strftime("%B %d %Y - %I:%M%p")
-  tab8.ElogView.insert(END, Curtime+" - "+message)
-  value=tab8.ElogView.get(0,END)
+  tab9.ElogView.insert(END, Curtime+" - "+message)
+  value=tab9.ElogView.get(0,END)
   pickle.dump(value,open("ErrorLog","wb"))     
 
 def calRobotJ4():
@@ -5242,8 +5243,8 @@ def calRobotJ4():
     almStatusLab2.config(text=message)
     ErrorHandler(response)
   Curtime = datetime.datetime.now().strftime("%B %d %Y - %I:%M%p")
-  tab8.ElogView.insert(END, Curtime+" - "+message)
-  value=tab8.ElogView.get(0,END)
+  tab9.ElogView.insert(END, Curtime+" - "+message)
+  value=tab9.ElogView.get(0,END)
   pickle.dump(value,open("ErrorLog","wb"))     
 
 def calRobotJ5():
@@ -5266,8 +5267,8 @@ def calRobotJ5():
     almStatusLab2.config(text=message)
     ErrorHandler(response)
   Curtime = datetime.datetime.now().strftime("%B %d %Y - %I:%M%p")
-  tab8.ElogView.insert(END, Curtime+" - "+message)
-  value=tab8.ElogView.get(0,END)
+  tab9.ElogView.insert(END, Curtime+" - "+message)
+  value=tab9.ElogView.get(0,END)
   pickle.dump(value,open("ErrorLog","wb"))     
 
 def calRobotJ6():
@@ -5290,8 +5291,8 @@ def calRobotJ6():
     almStatusLab2.config(text=message)
     ErrorHandler(response)
   Curtime = datetime.datetime.now().strftime("%B %d %Y - %I:%M%p")
-  tab8.ElogView.insert(END, Curtime+" - "+message)
-  value=tab8.ElogView.get(0,END)
+  tab9.ElogView.insert(END, Curtime+" - "+message)
+  value=tab9.ElogView.get(0,END)
   pickle.dump(value,open("ErrorLog","wb"))   
 
 def calRobotJ7():
@@ -5314,8 +5315,8 @@ def calRobotJ7():
     almStatusLab2.config(text=message)
     ErrorHandler(response)
   Curtime = datetime.datetime.now().strftime("%B %d %Y - %I:%M%p")
-  tab8.ElogView.insert(END, Curtime+" - "+message)
-  value=tab8.ElogView.get(0,END)
+  tab9.ElogView.insert(END, Curtime+" - "+message)
+  value=tab9.ElogView.get(0,END)
   pickle.dump(value,open("ErrorLog","wb")) 
 
 def calRobotJ8():
@@ -5338,8 +5339,8 @@ def calRobotJ8():
     almStatusLab2.config(text=message)
     ErrorHandler(response)
   Curtime = datetime.datetime.now().strftime("%B %d %Y - %I:%M%p")
-  tab8.ElogView.insert(END, Curtime+" - "+message)
-  value=tab8.ElogView.get(0,END)
+  tab9.ElogView.insert(END, Curtime+" - "+message)
+  value=tab9.ElogView.get(0,END)
   pickle.dump(value,open("ErrorLog","wb"))    
 
 def calRobotJ9():
@@ -5362,8 +5363,8 @@ def calRobotJ9():
     almStatusLab2.config(text=message)
     ErrorHandler(response)
   Curtime = datetime.datetime.now().strftime("%B %d %Y - %I:%M%p")
-  tab8.ElogView.insert(END, Curtime+" - "+message)
-  value=tab8.ElogView.get(0,END)
+  tab9.ElogView.insert(END, Curtime+" - "+message)
+  value=tab9.ElogView.get(0,END)
   pickle.dump(value,open("ErrorLog","wb"))             
 	
 
@@ -5535,8 +5536,8 @@ def zeroAxis7():
   almStatusLab2.config(text="J7 Calibration Forced to Zero")
   message = "J7 Calibration Forced to Zero - this is for commissioning and testing - be careful!"
   Curtime = datetime.datetime.now().strftime("%B %d %Y - %I:%M%p")
-  tab8.ElogView.insert(END, Curtime+" - "+message)
-  value=tab8.ElogView.get(0,END)
+  tab9.ElogView.insert(END, Curtime+" - "+message)
+  value=tab9.ElogView.get(0,END)
   pickle.dump(value,open("ErrorLog","wb"))  
   response = str(ser.readline().strip(),'utf-8')
   displayPosition(response) 
@@ -5550,8 +5551,8 @@ def zeroAxis8():
   almStatusLab2.config(text="J8 Calibration Forced to Zero")
   message = "J8 Calibration Forced to Zero - this is for commissioning and testing - be careful!"
   Curtime = datetime.datetime.now().strftime("%B %d %Y - %I:%M%p")
-  tab8.ElogView.insert(END, Curtime+" - "+message)
-  value=tab8.ElogView.get(0,END)
+  tab9.ElogView.insert(END, Curtime+" - "+message)
+  value=tab9.ElogView.get(0,END)
   pickle.dump(value,open("ErrorLog","wb"))  
   response = str(ser.readline().strip(),'utf-8')
   displayPosition(response) 
@@ -5565,8 +5566,8 @@ def zeroAxis9():
   almStatusLab2.config(text="J9 Calibration Forced to Zero")
   message = "J9 Calibration Forced to Zero - this is for commissioning and testing - be careful!"
   Curtime = datetime.datetime.now().strftime("%B %d %Y - %I:%M%p")
-  tab8.ElogView.insert(END, Curtime+" - "+message)
-  value=tab8.ElogView.get(0,END)
+  tab9.ElogView.insert(END, Curtime+" - "+message)
+  value=tab9.ElogView.get(0,END)
   pickle.dump(value,open("ErrorLog","wb"))  
   response = str(ser.readline().strip(),'utf-8')
   displayPosition(response)   
@@ -5590,8 +5591,8 @@ def CalZeroPos():
   almStatusLab.config(text="Calibration Forced to Home")
   almStatusLab2.config(text="Calibration Forced to Home")
   message = "Calibration Forced to Home - this is for commissioning and testing - be careful!"
-  tab8.ElogView.insert(END, Curtime+" - "+message)
-  value=tab8.ElogView.get(0,END)
+  tab9.ElogView.insert(END, Curtime+" - "+message)
+  value=tab9.ElogView.get(0,END)
   pickle.dump(value,open("ErrorLog","wb"))  
 
 def CalRestPos():
@@ -5605,8 +5606,8 @@ def CalRestPos():
   almStatusLab.config(text="Calibration Forced to Vertical Rest Pos")
   almStatusLab2.config(text="Calibration Forced to Vertical Rest Pos")
   message = "Calibration Forced to Vertical - this is for commissioning and testing - be careful!"
-  tab8.ElogView.insert(END, Curtime+" - "+message)
-  value=tab8.ElogView.get(0,END)
+  tab9.ElogView.insert(END, Curtime+" - "+message)
+  value=tab9.ElogView.get(0,END)
   pickle.dump(value,open("ErrorLog","wb"))  
 
 
@@ -5727,8 +5728,8 @@ def displayPosition(response):
   if (SpeedVioation=='1'):
       Curtime = datetime.datetime.now().strftime("%B %d %Y - %I:%M%p")
       message = "Max Speed Violation - Reduce Speed Setpoint or Travel Distance"
-      tab8.ElogView.insert(END, Curtime+" - "+message)
-      value=tab8.ElogView.get(0,END)
+      tab9.ElogView.insert(END, Curtime+" - "+message)
+      value=tab9.ElogView.get(0,END)
       pickle.dump(value,open("ErrorLog","wb"))          
       almStatusLab.config(text=message)
       almStatusLab2.config(text=message)
@@ -6470,7 +6471,7 @@ def savePosData():
 
   ###########
   value=calibration.get(0,END)
-  pickle.dump(value,open("SBot.cal","wb"))
+  pickle.dump(value,open( "GUI_ControlPanelV4\\" + "SBot.cal","wb"))
 
 def checkSpeedVals():
   speedtype = speedOption.get()
@@ -6512,48 +6513,48 @@ def ErrorHandler(response):
   if (response[1:2] == 'L'):
     if (response[2:3] == '1'):
       message = "J1 Axis Limit"
-      tab8.ElogView.insert(END, Curtime+" - "+message)
-      value=tab8.ElogView.get(0,END)
+      tab9.ElogView.insert(END, Curtime+" - "+message)
+      value=tab9.ElogView.get(0,END)
       pickle.dump(value,open("ErrorLog","wb"))
     if (response[3:4] == '1'):
       message = "J2 Axis Limit"
-      tab8.ElogView.insert(END, Curtime+" - "+message)
-      value=tab8.ElogView.get(0,END)
+      tab9.ElogView.insert(END, Curtime+" - "+message)
+      value=tab9.ElogView.get(0,END)
       pickle.dump(value,open("ErrorLog","wb"))
     if (response[4:5] == '1'):
       message = "J3 Axis Limit"
-      tab8.ElogView.insert(END, Curtime+" - "+message)
-      value=tab8.ElogView.get(0,END)
+      tab9.ElogView.insert(END, Curtime+" - "+message)
+      value=tab9.ElogView.get(0,END)
       pickle.dump(value,open("ErrorLog","wb"))
     if (response[5:6] == '1'):
       message = "J4 Axis Limit"
-      tab8.ElogView.insert(END, Curtime+" - "+message)
-      value=tab8.ElogView.get(0,END)
+      tab9.ElogView.insert(END, Curtime+" - "+message)
+      value=tab9.ElogView.get(0,END)
       pickle.dump(value,open("ErrorLog","wb"))
     if (response[6:7] == '1'):
       message = "J5 Axis Limit"
-      tab8.ElogView.insert(END, Curtime+" - "+message)
-      value=tab8.ElogView.get(0,END)
+      tab9.ElogView.insert(END, Curtime+" - "+message)
+      value=tab9.ElogView.get(0,END)
       pickle.dump(value,open("ErrorLog","wb"))
     if (response[7:8] == '1'):
       message = "J6 Axis Limit"
-      tab8.ElogView.insert(END, Curtime+" - "+message)
-      value=tab8.ElogView.get(0,END)
+      tab9.ElogView.insert(END, Curtime+" - "+message)
+      value=tab9.ElogView.get(0,END)
       pickle.dump(value,open("ErrorLog","wb"))
     if (response[8:9] == '1'):
       message = "J7 Axis Limit"
-      tab8.ElogView.insert(END, Curtime+" - "+message)
-      value=tab8.ElogView.get(0,END)
+      tab9.ElogView.insert(END, Curtime+" - "+message)
+      value=tab9.ElogView.get(0,END)
       pickle.dump(value,open("ErrorLog","wb"))
     if (response[9:10] == '1'):
       message = "J8 Axis Limit"
-      tab8.ElogView.insert(END, Curtime+" - "+message)
-      value=tab8.ElogView.get(0,END)
+      tab9.ElogView.insert(END, Curtime+" - "+message)
+      value=tab9.ElogView.get(0,END)
       pickle.dump(value,open("ErrorLog","wb"))
     if (response[10:11] == '1'):
       message = "J9 Axis Limit"
-      tab8.ElogView.insert(END, Curtime+" - "+message)
-      value=tab8.ElogView.get(0,END)
+      tab9.ElogView.insert(END, Curtime+" - "+message)
+      value=tab9.ElogView.get(0,END)
       pickle.dump(value,open("ErrorLog","wb"))         
     cmdRecEntryField.delete(0, 'end')
     cmdRecEntryField.insert(0,response)            
@@ -6566,8 +6567,8 @@ def ErrorHandler(response):
   elif (response[1:2] == 'C'):
     if (response[2:3] == '1'):
       message = "J1 Collision or Motor Error"
-      tab8.ElogView.insert(END, Curtime+" - "+message)
-      value=tab8.ElogView.get(0,END)
+      tab9.ElogView.insert(END, Curtime+" - "+message)
+      value=tab9.ElogView.get(0,END)
       pickle.dump(value,open("ErrorLog","wb"))
       correctPos()
       stopProg()
@@ -6577,8 +6578,8 @@ def ErrorHandler(response):
       GCalmStatusLab.config(text=message)   
     if (response[3:4] == '1'):
       message = "J2 Collision or Motor Error"
-      tab8.ElogView.insert(END, Curtime+" - "+message)
-      value=tab8.ElogView.get(0,END)
+      tab9.ElogView.insert(END, Curtime+" - "+message)
+      value=tab9.ElogView.get(0,END)
       pickle.dump(value,open("ErrorLog","wb"))
       correctPos()
       stopProg()
@@ -6588,8 +6589,8 @@ def ErrorHandler(response):
       GCalmStatusLab.config(text=message)
     if (response[4:5] == '1'):
       message = "J3 Collision or Motor Error"
-      tab8.ElogView.insert(END, Curtime+" - "+message)
-      value=tab8.ElogView.get(0,END)
+      tab9.ElogView.insert(END, Curtime+" - "+message)
+      value=tab9.ElogView.get(0,END)
       pickle.dump(value,open("ErrorLog","wb"))
       correctPos()
       stopProg()
@@ -6599,8 +6600,8 @@ def ErrorHandler(response):
       GCalmStatusLab.config(text=message)
     if (response[5:6] == '1'):
       message = "J4 Collision or Motor Error"
-      tab8.ElogView.insert(END, Curtime+" - "+message)
-      value=tab8.ElogView.get(0,END)
+      tab9.ElogView.insert(END, Curtime+" - "+message)
+      value=tab9.ElogView.get(0,END)
       pickle.dump(value,open("ErrorLog","wb"))
       correctPos()
       stopProg()
@@ -6610,8 +6611,8 @@ def ErrorHandler(response):
       GCalmStatusLab.config(text=message)
     if (response[6:7] == '1'):
       message = "J5 Collision or Motor Error"
-      tab8.ElogView.insert(END, Curtime+" - "+message)
-      value=tab8.ElogView.get(0,END)
+      tab9.ElogView.insert(END, Curtime+" - "+message)
+      value=tab9.ElogView.get(0,END)
       pickle.dump(value,open("ErrorLog","wb"))
       correctPos()
       stopProg()
@@ -6621,8 +6622,8 @@ def ErrorHandler(response):
       GCalmStatusLab.config(text=message)
     if (response[7:8] == '1'):
       message = "J6 Collision or Motor Error"
-      tab8.ElogView.insert(END, Curtime+" - "+message)
-      value=tab8.ElogView.get(0,END)
+      tab9.ElogView.insert(END, Curtime+" - "+message)
+      value=tab9.ElogView.get(0,END)
       pickle.dump(value,open("ErrorLog","wb"))  
       correctPos()
       stopProg()        
@@ -6636,8 +6637,8 @@ def ErrorHandler(response):
     posOutreach = TRUE
     stopProg()
     message = "Position Out of Reach"
-    tab8.ElogView.insert(END, Curtime+" - "+message)
-    value=tab8.ElogView.get(0,END)
+    tab9.ElogView.insert(END, Curtime+" - "+message)
+    value=tab9.ElogView.get(0,END)
     pickle.dump(value,open("ErrorLog","wb")) 
     almStatusLab.config(text=message)
     almStatusLab2.config(text=message)
@@ -6647,8 +6648,8 @@ def ErrorHandler(response):
   elif (response[1:2] == 'S'):  
     stopProg()
     message = "Spline Can Only Have Move L Types"
-    tab8.ElogView.insert(END, Curtime+" - "+message)
-    value=tab8.ElogView.get(0,END)
+    tab9.ElogView.insert(END, Curtime+" - "+message)
+    value=tab9.ElogView.get(0,END)
     pickle.dump(value,open("ErrorLog","wb")) 
     almStatusLab.config(text=message)
     almStatusLab2.config(text=message)
@@ -6658,8 +6659,8 @@ def ErrorHandler(response):
   elif (response[1:2] == 'G'):
     stopProg()
     message = "Gcode file not found"
-    tab8.ElogView.insert(END, Curtime+" - "+message)
-    value=tab8.ElogView.get(0,END)
+    tab9.ElogView.insert(END, Curtime+" - "+message)
+    value=tab9.ElogView.get(0,END)
     pickle.dump(value,open("ErrorLog","wb")) 
     almStatusLab.config(text=message)
     almStatusLab2.config(text=message)
@@ -6670,8 +6671,8 @@ def ErrorHandler(response):
     estopActive = TRUE
     stopProg()
     message = "Estop Button was Pressed"
-    tab8.ElogView.insert(END, Curtime+" - "+message)
-    value=tab8.ElogView.get(0,END)
+    tab9.ElogView.insert(END, Curtime+" - "+message)
+    value=tab9.ElogView.get(0,END)
     pickle.dump(value,open("ErrorLog","wb")) 
     almStatusLab.config(text=message)
     almStatusLab2.config(text=message)
@@ -6681,55 +6682,55 @@ def ErrorHandler(response):
   elif (response[1:2] == 'A'):  
     if (response[2:3] == '1'):
       message = "J1 CALIBRATION ERROR"
-      tab8.ElogView.insert(END, Curtime+" - "+message)
-      value=tab8.ElogView.get(0,END)
+      tab9.ElogView.insert(END, Curtime+" - "+message)
+      value=tab9.ElogView.get(0,END)
       pickle.dump(value,open("ErrorLog","wb"))
     if (response[2:3] == '2'):
       message = "J2 CALIBRATION ERROR"
-      tab8.ElogView.insert(END, Curtime+" - "+message)
-      value=tab8.ElogView.get(0,END)
+      tab9.ElogView.insert(END, Curtime+" - "+message)
+      value=tab9.ElogView.get(0,END)
       pickle.dump(value,open("ErrorLog","wb")) 
     if (response[2:3] == '3'):
       message = "J3 CALIBRATION ERROR"
-      tab8.ElogView.insert(END, Curtime+" - "+message)
-      value=tab8.ElogView.get(0,END)
+      tab9.ElogView.insert(END, Curtime+" - "+message)
+      value=tab9.ElogView.get(0,END)
       pickle.dump(value,open("ErrorLog","wb")) 
     if (response[2:3] == '4'):
       message = "J4 CALIBRATION ERROR"
-      tab8.ElogView.insert(END, Curtime+" - "+message)
-      value=tab8.ElogView.get(0,END)
+      tab9.ElogView.insert(END, Curtime+" - "+message)
+      value=tab9.ElogView.get(0,END)
       pickle.dump(value,open("ErrorLog","wb")) 
     if (response[2:3] == '5'):
       message = "J5 CALIBRATION ERROR"
-      tab8.ElogView.insert(END, Curtime+" - "+message)
-      value=tab8.ElogView.get(0,END)
+      tab9.ElogView.insert(END, Curtime+" - "+message)
+      value=tab9.ElogView.get(0,END)
       pickle.dump(value,open("ErrorLog","wb")) 
     if (response[2:3] == '6'):
       message = "J6 CALIBRATION ERROR"
-      tab8.ElogView.insert(END, Curtime+" - "+message)
-      value=tab8.ElogView.get(0,END)
+      tab9.ElogView.insert(END, Curtime+" - "+message)
+      value=tab9.ElogView.get(0,END)
       pickle.dump(value,open("ErrorLog","wb")) 
     if (response[2:3] == '7'):
       message = "J7 CALIBRATION ERROR"
-      tab8.ElogView.insert(END, Curtime+" - "+message)
-      value=tab8.ElogView.get(0,END)
+      tab9.ElogView.insert(END, Curtime+" - "+message)
+      value=tab9.ElogView.get(0,END)
       pickle.dump(value,open("ErrorLog","wb"))
     if (response[2:3] == '8'):
       message = "J8 CALIBRATION ERROR"
-      tab8.ElogView.insert(END, Curtime+" - "+message)
-      value=tab8.ElogView.get(0,END)
+      tab9.ElogView.insert(END, Curtime+" - "+message)
+      value=tab9.ElogView.get(0,END)
       pickle.dump(value,open("ErrorLog","wb")) 
     if (response[2:3] == '9'):
       message = "J9 CALIBRATION ERROR"
-      tab8.ElogView.insert(END, Curtime+" - "+message)
-      value=tab8.ElogView.get(0,END)
+      tab9.ElogView.insert(END, Curtime+" - "+message)
+      value=tab9.ElogView.get(0,END)
       pickle.dump(value,open("ErrorLog","wb"))                    
      
   else:
     stopProg() 
     message = "Unknown Error"
-    tab8.ElogView.insert(END, Curtime+" - "+message)
-    value=tab8.ElogView.get(0,END)
+    tab9.ElogView.insert(END, Curtime+" - "+message)
+    value=tab9.ElogView.get(0,END)
     pickle.dump(value,open("ErrorLog","wb"))
     almStatusLab.config(text=message)
     almStatusLab2.config(text=message)
@@ -6935,7 +6936,11 @@ def show_frame():
 
     if cam_on:
 
-        ret, frame = cap.read()    
+        ret, frame = cap.read()  
+        # take_pic()
+        # snapFind()
+        
+
 
         if ret:
             cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)    
@@ -6956,7 +6961,7 @@ def start_vid():
     for i in range(l):
       if (visoptions.get() == camList[i]):
         selectedCam = i
-    cap = cv2.VideoCapture(selectedCam) 
+    cap = cv2.VideoCapture(selectedCam, cv2.CAP_DSHOW) 
     show_frame()
 
 def stop_vid():
@@ -6986,7 +6991,7 @@ def take_pic():
       if (visoptions.get() == camList[i]):
         selectedCam = i
         #print(selectedCam) 
-    cap = cv2.VideoCapture(selectedCam) 
+    cap = cv2.VideoCapture(selectedCam, cv2.CAP_DSHOW) 
     ret, frame = cap.read()
 
   brightness = int(VisBrightSlide.get())
@@ -6994,10 +6999,14 @@ def take_pic():
   zoom = int(VisZoomSlide.get())
 
   frame = np.int16(frame)
+  _frame  = frame.copy()
+  _frame = np.clip(_frame, 0, 255)
+  _frame = np.uint8(_frame)
   frame = frame * (contrast/127+1) - contrast + brightness
   frame = np.clip(frame, 0, 255)
-  frame = np.uint8(frame) 
+  frame = np.uint8(frame)
   cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) 
+  cv2image = 255 - cv2image
   
 
   #get the webcam size
@@ -7011,7 +7020,38 @@ def take_pic():
   minY,maxY=centerY-radiusY,centerY+radiusY
 
   cropped = cv2image[minX:maxX, minY:maxY]
+  # threshold, thresh = cv2.threshold(cv2image, float(VisScoreEntryField.get()), 255, cv2.THRESH_BINARY)
   cv2image = cv2.resize(cropped, (width, height))
+
+  # hsv = cv2.bitwise_and(_frame, _frame, mask=thresh)
+  # hsv = cv2.cvtColor(hsv, cv2.COLOR_BGR2HSV)
+  
+  # low_pink = (100, 30, 30)
+  # high_pink =  (255, 255, 255)
+
+  # colorMask = cv2.inRange(hsv, low_pink, high_pink)
+  # result = cv2.bitwise_and(frame, frame, mask=colorMask)
+
+
+
+
+
+
+  # _height, _width = frame.shape
+
+  # #prepare the crop
+  # _centerX,_centerY=int(_height/2),int(_width/2)
+  # _radiusX,_radiusY= int(zoom*_height/100),int(zoom*_width/100)
+
+  # _minX,_maxX=_centerX-_radiusX,_centerX+_radiusX
+  # _minY,_maxY=_centerY-_radiusY,_centerY+_radiusY
+
+  # _cropped = frame[_minX:_maxX, _minY:_maxY]
+  # frame = cv2.resize(_cropped, (_width, _height))
+
+
+  # cv2.imshow("1", frame)
+  # cv2.imshow("2", colorMask)
 
   autoBGVal = int(autoBG.get())
   if(autoBGVal==1):
@@ -7047,7 +7087,7 @@ def take_pic():
   imgtk = ImageTk.PhotoImage(image=img) 
   vid_lbl.imgtk = imgtk    
   vid_lbl.configure(image=imgtk) 
-  filename = 'curImage.jpg'
+  filename = 'GUI_ControlPanelV4//curImage.jpg'
   cv2.imwrite(filename, cv2image)
 
 
@@ -7069,7 +7109,7 @@ def mask_pic():
       if (visoptions.get() == camList[i]):
         selectedCam = i
         #print(selectedCam) 
-    cap = cv2.VideoCapture(selectedCam) 
+    cap = cv2.VideoCapture(selectedCam, cv2.CAP_DSHOW) 
     ret, frame = cap.read()
   brightness = int(VisBrightSlide.get())
   contrast = int(VisContrastSlide.get())
@@ -7170,7 +7210,7 @@ def mask_crop(event, x, y, flags, param):
         imgtk = ImageTk.PhotoImage(image=img) 
         vid_lbl.imgtk = imgtk    
         vid_lbl.configure(image=imgtk) 
-        filename = 'curImage.jpg'
+        filename = "GUI_ControlPanelV4\\curImage.jpg"
         cv2.imwrite(filename, oriImage)
         cv2.destroyAllWindows()
 
@@ -7183,7 +7223,7 @@ def selectMask():
   x_start, y_start, x_end, y_end = 0, 0, 0, 0
   mask_pic()
 
-  image = cv2.imread('curImage.jpg')
+  image = cv2.imread("GUI_ControlPanelV4//"+'curImage.jpg')
   oriImage = image.copy()
   
   cv2.namedWindow("image")
@@ -7227,6 +7267,7 @@ def mouse_crop(event, x, y, flags, param):
         cropping = False # cropping is finished
 
         refPoint = [(x_start+3, y_start+3), (x_end-3, y_end-3)]
+        print(refPoint)
 
         if len(refPoint) == 2: #when two points were found
             roi = oriImage[refPoint[0][1]:refPoint[1][1], refPoint[0][0]:refPoint[1][0]]
@@ -7235,7 +7276,7 @@ def mouse_crop(event, x, y, flags, param):
             USER_INP = simpledialog.askstring(title="Teach Vision Object",
                                   prompt="Save Object As:")
             templateName = USER_INP+".jpg"                      
-            cv2.imwrite(templateName, roi)
+            cv2.imwrite("GUI_ControlPanelV4//"+templateName, roi)
             cv2.destroyAllWindows()
             updateVisOp()  
 
@@ -7246,7 +7287,7 @@ def selectTemplate():
   global button_down
   button_down = False
   x_start, y_start, x_end, y_end = 0, 0, 0, 0
-  image = cv2.imread('curImage.jpg')
+  image = cv2.imread("GUI_ControlPanelV4//"+'curImage.jpg')
   oriImage = image.copy()
   
   cv2.namedWindow("image")
@@ -7271,7 +7312,7 @@ def snapFind():
     VisBacColorEntryField.configure(state='disabled')  
   else:  
     background = eval(VisBacColorEntryField.get())
-  visFind(template,min_score,background)
+  visFind("GUI_ControlPanelV4/"+template,min_score,background)
 
 
 
@@ -7301,7 +7342,7 @@ def visFind(template,min_score,background):
     dkgreen = (0,128,0)
     status = "fail"
     highscore = 0
-    img1 = cv2.imread('curImage.jpg')  # target Image
+    img1 = cv2.imread("GUI_ControlPanelV4//"+'curImage.jpg')  # target Image
     img2 = cv2.imread(template)  # target Image
     
     #method = cv2.TM_CCOEFF_NORMED
@@ -7611,7 +7652,7 @@ def VisOpUpdate(foo):
   global selectedTemplate
   file = selectedTemplate.get()
   print(file)
-  img = cv2.imread(file, cv2.IMREAD_COLOR)
+  img = cv2.imread("GUI_ControlPanelV4//"+file, cv2.IMREAD_COLOR)
   img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  
 
 
@@ -11289,21 +11330,29 @@ gcodeFilenameLab = Label(tab7, text = "Filename:")
 gcodeFilenameLab.place(x=20, y=320)
 
 
-
-
-
-
-
 ####################################################################################################################################################
 ####################################################################################################################################################
 ####################################################################################################################################################
 ####TAB 8
 
-Elogframe=Frame(tab8)
+
+# yoloFrame = Frame(tab8)
+# yoloFrame.place(x=40,y=15)
+
+
+
+
+
+####################################################################################################################################################
+####################################################################################################################################################
+####################################################################################################################################################
+####TAB 9
+
+Elogframe=Frame(tab9)
 Elogframe.place(x=40,y=15)
 scrollbar = Scrollbar(Elogframe) 
 scrollbar.pack(side=RIGHT, fill=Y)
-tab8.ElogView = Listbox(Elogframe,width=150,height=40, yscrollcommand=scrollbar.set)
+tab9.ElogView = Listbox(Elogframe,width=150,height=40, yscrollcommand=scrollbar.set)
 try:
   Elog = pickle.load(open("ErrorLog","rb"))
 except:
@@ -11311,16 +11360,16 @@ except:
   pickle.dump(Elog,open("ErrorLog","wb"))
 time.sleep(.1)
 for item in Elog:
-  tab8.ElogView.insert(END,item) 
-tab8.ElogView.pack()
-scrollbar.config(command=tab8.ElogView.yview)
+  tab9.ElogView.insert(END,item) 
+tab9.ElogView.pack()
+scrollbar.config(command=tab9.ElogView.yview)
 
 def clearLog():
- tab8.ElogView.delete(1,END)
- value=tab8.ElogView.get(0,END)
+ tab9.ElogView.delete(1,END)
+ value=tab9.ElogView.get(0,END)
  pickle.dump(value,open("ErrorLog","wb"))
 
-clearLogBut = Button(tab8,  text="Clear Log",  width=26, command = clearLog)
+clearLogBut = Button(tab9,  text="Clear Log",  width=26, command = clearLog)
 clearLogBut.place(x=1000, y=630)
 
 
@@ -11331,10 +11380,10 @@ clearLogBut.place(x=1000, y=630)
 calibration = Listbox(tab2,height=60)
 
 try:
-  Cal = pickle.load(open(r"GUI_ControlPanelV4\Sbot.cal","rb"))
+  Cal = pickle.load(open(r"GUI_ControlPanelV4\\Sbot.cal","rb"))
 except:
   Cal = "0"
-  pickle.dump(Cal,open(r"GUI_ControlPanelV4\Sbot.cal","wb"))
+  pickle.dump(Cal,open(r"GUI_ControlPanelV4\\Sbot.cal","wb"))
 for item in Cal:
   calibration.insert(END,item)
 global mX1
@@ -11702,7 +11751,7 @@ if (J6OpenLoopVal == 1):
   J6OpenLoopStat.set(True)
 if (DisableWristRotVal == 1):
   DisableWristRot.set(True)  
-if (curTheme == 1): 
+if (curTheme != 1): 
   lightTheme()
 else:
   darkTheme()  
