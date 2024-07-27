@@ -4618,7 +4618,7 @@ def callProg(name):
 def CreateProg():
   user_input = simpledialog.askstring(title="New Program", prompt="New Program Name:")
   file_path = user_input + ".prog"
-  with open(file_path,'w', encoding='utf-8') as f:
+  with open("GUI_ControlPanelV4//" + file_path,'w', encoding='utf-8') as f:
     f.write("##BEGINNING OF PROGRAM##")
     f.write('\n')
   f.close()
@@ -4732,7 +4732,7 @@ def insertvisFind():
     last = tab1.progView.index('end')
     selRow = last
     tab1.progView.select_set(selRow)
-  template = selectedTemplate.get()
+  template = "GUI_ControlPanelV4//" + selectedTemplate.get()
   if (template == ""):
     template = "None_Selected.jpg"
   autoBGVal = int(autoBG.get())  
@@ -6534,7 +6534,7 @@ def openvision():
     almStatusLab2.config(text="SYSTEM READY",  style="OK.TLabel")
     while (value == 0): 
       try:
-        f = open(VisFileLoc,"r")
+        f = open("GUI_ControlPanelV4//" + VisFileLoc,"r")
         value = f.readlines()[-1]#.decode()
       except:
         value = 0  
@@ -6769,6 +6769,7 @@ def take_pic():
   frame = np.clip(frame, 0, 255)
   frame = np.uint8(frame) 
   cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) 
+  cv2image = 255 - cv2image
   
 
   #get the webcam size
@@ -6850,6 +6851,7 @@ def mask_pic():
   frame = np.clip(frame, 0, 255)
   frame = np.uint8(frame) 
   cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) 
+  cv2image = 255 - cv2image
   #get the webcam size
   height, width = cv2image.shape
   #prepare the crop
@@ -7005,7 +7007,7 @@ def mouse_crop(event, x, y, flags, param):
             cv2.imshow("Cropped", roi)
             USER_INP = simpledialog.askstring(title="Teach Vision Object",
                                   prompt="Save Object As:")
-            templateName = USER_INP+".jpg"                      
+            templateName = "GUI_ControlPanelV4"+USER_INP+".jpg"                      
             cv2.imwrite(templateName, roi)
             cv2.destroyAllWindows()
             updateVisOp()  
@@ -7031,7 +7033,7 @@ def snapFind():
   global selectedTemplate
   global BGavg
   take_pic()
-  template = selectedTemplate.get()
+  template = "GUI_ControlPanelV4//" + selectedTemplate.get()
   min_score = float(VisScoreEntryField.get())*.01
   autoBGVal = int(autoBG.get())
   if(autoBGVal==1):
@@ -7380,7 +7382,7 @@ def updateVisOp():
 
 def VisOpUpdate(foo):
   global selectedTemplate
-  file = selectedTemplate.get()
+  file = "GUI_ControlPanelV4//" + selectedTemplate.get()
   print(file)
   img = cv2.imread(file, cv2.IMREAD_COLOR)
   img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  
