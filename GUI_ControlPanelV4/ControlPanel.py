@@ -286,7 +286,7 @@ def darkTheme():
   # style.set_theme("black")
   # style = ttk.Style()
   # style.configure("Alarm.TLabel", foreground="IndianRed1", font = ('Arial','10','bold'))
-  # style.configure("Warn.TLabel", foreground="orange", font = ('Arial','10','bold'))
+  # style.configure("Warn.TLabel", foreground="og", font = ('Arial','10','bold'))
   # style.configure("OK.TLabel", foreground="light green", font = ('Arial','10','bold'))
   # style.configure("Jointlim.TLabel", foreground="light blue", font = ('Arial','8'))
   # style.configure('AlarmBut.TButton', foreground ='IndianRed1')
@@ -299,7 +299,7 @@ def lightTheme():
   # style.set_theme("keramik")
   # style = ttk.Style()
   # style.configure("Alarm.TLabel", foreground="red", font = ('Arial','10','bold'))
-  # style.configure("Warn.TLabel", foreground="dark orange", font = ('Arial','10','bold'))
+  # style.configure("Warn.TLabel", foreground="dark og", font = ('Arial','10','bold'))
   # style.configure("OK.TLabel", foreground="green", font = ('Arial','10','bold'))
   # style.configure("Jointlim.TLabel", foreground="dark blue", font = ('Arial','8'))
   # style.configure('AlarmBut.TButton', foreground ='red')
@@ -4617,8 +4617,8 @@ def callProg(name):
 
 def CreateProg():
   user_input = simpledialog.askstring(title="New Program", prompt="New Program Name:")
-  file_path = user_input + ".prog"
-  with open("GUI_ControlPanelV4//" + file_path,'w', encoding='utf-8') as f:
+  file_path = "GUI_ControlPanelV4//" +  user_input + ".prog"
+  with open(file_path,'w', encoding='utf-8') as f:
     f.write("##BEGINNING OF PROGRAM##")
     f.write('\n')
   f.close()
@@ -6768,6 +6768,7 @@ def take_pic():
   frame = frame * (contrast/127+1) - contrast + brightness
   frame = np.clip(frame, 0, 255)
   frame = np.uint8(frame) 
+  imgframe = frame.copy()
   cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) 
   cv2image = 255 - cv2image
   
@@ -6783,7 +6784,11 @@ def take_pic():
   minY,maxY=centerY-radiusY,centerY+radiusY
 
   cropped = cv2image[minX:maxX, minY:maxY]
+  _cropped = imgframe[minX:maxX, minY:maxY]
+
   cv2image = cv2.resize(cropped, (width, height))
+  imgframe = cv2.resize(_cropped, (width, height))
+
 
   autoBGVal = int(autoBG.get())
   if(autoBGVal==1):
@@ -6820,7 +6825,9 @@ def take_pic():
   vid_lbl.imgtk = imgtk    
   vid_lbl.configure(image=imgtk) 
   filename = 'curImage.jpg'
+  filenameColor = 'curImageColor.jpg'
   cv2.imwrite(filename, cv2image)
+  cv2.imwrite(filenameColor, imgframe)
 
 
 def mask_pic():
@@ -7076,11 +7083,13 @@ def visFind(template,min_score,background):
     highscore = 0
     img1 = cv2.imread('curImage.jpg')  # target Image
     img2 = cv2.imread(template)  # target Image
+    img3 = cv2.imread('curImageColor.jpg')  # target Image
     
     #method = cv2.TM_CCOEFF_NORMED
     #method = cv2.TM_CCORR_NORMED
 
     img = img1.copy()
+    _img = img3.copy()
 
     fullRotVal = int(fullRot.get())
 
@@ -7221,6 +7230,27 @@ def visFind(template,min_score,background):
 
 
       cv2.circle(img, (imgxPos,imgyPos), 20, green, 1)
+
+      blank = np.zeros(_img.shape, dtype='uint8')
+      blank = cv2.cvtColor(blank, cv2.COLOR_BGR2GRAY) 
+      cv2.circle(blank, (imgxPos,imgyPos), 20, 255, -1) #mask
+      masked = cv2.bitwise_and(_img, _img, mask=blank)
+      hsv = cv2.cvtColor(masked, cv2.COLOR_BGR2HSV)
+      lw_pk = np.array([150,102,102])
+      hg_pk = np.array([255,255,255])
+      pkMask= cv2.inRange(hsv, lw_pk, hg_pk)
+      lw_og = np.array([0,102,102])
+      hg_og = np.array([150,255,255])
+      ogMask= cv2.inRange(hsv, lw_og, hg_og)
+      nrpk = cv2.countNonZero(pkMask)
+      nrog = cv2.countNonZero(ogMask)
+      R10EntryField.delete(0, END)
+
+      if nrpk > nrog:
+        R10EntryField.insert(0, "1")
+      else:
+        R10EntryField.insert(0, "2")
+
       #cv2.rectangle(img,top_left, bottom_right, green, 2)
       cv2.imwrite('temp.jpg', img)
       img = Image.fromarray(img).resize((640,480))

@@ -1,0 +1,14 @@
+Tab Number 0
+Vis Find - GUI_ControlPanelV4//bottle.jpg - BGcolor (Auto) Score 30 Pass 1 Fail 0
+Tab Number 1
+If Register # 10 = 1 : Jump to Tab 11
+If Register # 10 = 2 : Jump to Tab 12
+Jump Tab-0
+Tab Number 11
+Wait Time = 1
+ #Roz
+Jump Tab-0
+Tab Number 12
+Wait Time = 1
+   #Portocaliu
+Jump Tab-0
