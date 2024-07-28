@@ -28,6 +28,10 @@ import os
 from numpy import mean
 from os import path
 
+import pyttsx3
+import speech_recognition as sr
+
+
 
 DIR = pathlib.Path(__file__).parent.resolve()
 
@@ -11675,6 +11679,133 @@ checkAutoBG()
 xboxUse = 0
 
 
+
+# Tkinter GUI setup
+def create_gui():
+
+    # Initialize text-to-speech
+    engine = init_speech()
+
+    # Greet the user when the GUI starts
+
+    # Text box to display results
+    # text_box = ttk.Text(tab1, height=6, width=50)
+    # text_box.pack()
+
+    # listen_button = ttk.Text(tab1, text="Listen", command=openText)
+    # listen_button.place(x=295, y=725)
+
+    # Button to start voice recognition
+    def on_listen():
+        say(engine, "Hey, I am Smartify Robot. How can I help you?")
+        query = take_command(engine)
+        if query:
+            # text_box.insert(ttk.END, f"Command: {query}\n")
+            response = handle_command(engine, query)
+            say(engine, response)  # Voice response
+            # text_box.insert(ttk.END, f"Response: {response}\n")
+
+    # Create a listen button
+    listen_button = ttk.Button(tab1, text="Listen", command=on_listen)
+    listen_button.place(x=600, y=123)
+
+    test_button = ttk.Button(tab1, text="Test", command=on_listen)
+    test_button.place(x=500, y=123)
+
+    # listen_button = Button(tab1,  text="Listen", width=12,  command = openText)
+    # listen_button.place(x=295, y=725)
+    
+
+    # Start the Tkinter event loop
+    # tab1.mainloop()
+
+
+def init_speech():
+    engine = pyttsx3.init()
+    return engine
+
+
+# Function to speak text
+def say(engine, text):
+    engine.say(text)
+    engine.runAndWait()
+
+
+# Function to capture voice commands
+def take_command(engine):
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
+        r.adjust_for_ambient_noise(source, duration=1)  # Adjust for noise
+        say(engine, "I am listening")
+        audio = r.listen(source)
+        try:
+            query = r.recognize_google(audio, language='en-IN')
+            return query
+        except sr.UnknownValueError:
+            say(engine, "I couldn't understand. Please try again.")
+            return ""
+        except sr.RequestError:
+            say(engine, "Network error. Please check your internet connection.")
+            return ""
+
+
+# Command handling function
+def handle_command(engine, query):
+    # response = ""
+    # # List of websites to open based on commands
+    # sites = [
+    #     ["youtube", "https://www.youtube.com"],
+    #     ["wikipedia", "https://www.wikipedia.org"],
+    #     ["google", "https://www.google.com"]
+    # ]
+
+    # # Check for commands to open websites
+    # for site in sites:
+    #     if f"open {site[0]}".lower() in query.lower():
+    #         response = f"Opening {site[0]}..."
+    #         webbrowser.open(site[1])
+
+    # # Command to play music
+    # if "play music" in query.lower():
+    #     music_path =  "C:\\Users\\akash\\Downloads\\Zara-Zara-Bahekta-Hai-Mehekta-Hai(PagalWorld).mp3"
+    #     if os.path.exists(music_path):
+    #         response = "Playing music..."
+    #         os.startfile(music_path)
+    #     else:
+    #         response = "Music file not found."
+
+    # Command to get the current time
+    if "hello" in query.lower():
+      response = f"Hello, world! I am smartify robot and I am ready for work"
+    
+    elif "go home" in query.lower():
+      response = query.lower()
+      runProg()
+
+    elif "start drawing" in query.lower():
+      response = query.lower()
+      runProg()
+
+    else:
+      response = query.lower()
+
+
+    # # Command to open Notepad
+    # elif "open notepad" in query.lower():
+    #     response = "Opening Notepad..."
+    #     os.startfile("C:\\Windows\\notepad.exe")
+
+    # # Command to open the camera
+    # elif "open camera" in query.lower():
+    #     response = "Opening Camera..."
+    #     os.system("start microsoft.windows.camera:")
+    #     # os.startfile("C:\\Windows\\micwindows.camera:")
+
+    return response
+
+
+
+create_gui()
 
 tab1.mainloop()
 
