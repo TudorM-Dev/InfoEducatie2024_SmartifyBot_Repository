@@ -1,16 +1,23 @@
 ##BEGINNING OF PROGRAM##
 Tab Number 0
 Servo number 0 to position: 100
-Move J [*] X 64.380 Y 257.849 Z 312.222 Rz -102.277 Ry 130.811 Rx 15.104 J7 0.0 J8 0.0 J9 0.0 Sp 25 Ac 20 Dc 20 Rm 100 $ F
-Vis Find - GUI_ControlPanelV4//bottle.jpg - BGcolor (Auto) Score 30 Pass 1 Fail 0
+Move J [*] X 264.690 Y -23.875 Z 312.222 Rz 7.251 Ry 163.015 Rx -1.116 J7 0.0 J8 0.0 J9 0.0 Sp 100 Ac 20 Dc 20 Rm 100 $ F
+Vis Find - GUI_ControlPanelV4//bottle.jpg - BGcolor (Auto) Score 50 Pass 1 Fail 0
 Tab Number 1
 Position Register 1 Element 3 = 25
-Move Vis [ PR: 1 ] [*] X 265.808 Y -0.013 Z 157.849 Rz 120.254 Ry 128.839 Rx 5.246 J7 0.0 J8 0.0 J9 0.0 Sp 25 Ac 20 Dc 20 Rm 100 $ N
+Move Vis [ PR: 1 ] [*] X 265.808 Y -0.013 Z 157.849 Rz 120.254 Ry 128.839 Rx 5.246 J7 0.0 J8 0.0 J9 0.0 Sp 100 Ac 20 Dc 20 Rm 100 $ N
 Position Register 1 Element 3 = -25
-Move Vis [ PR: 1 ] [*] X 265.808 Y -0.013 Z 157.849 Rz 120.254 Ry 128.839 Rx 5.246 J7 0.0 J8 0.0 J9 0.0 Sp 25 Ac 20 Dc 20 Rm 100 $ N
+Move Vis [ PR: 1 ] [*] X 265.808 Y -0.013 Z 157.849 Rz 120.254 Ry 128.839 Rx 5.246 J7 0.0 J8 0.0 J9 0.0 Sp 100 Ac 20 Dc 20 Rm 100 $ N
 Servo number 0 to position: 0
-Position Register 1 Element 3 = 50
-Move Vis [ PR: 1 ] [*] X 265.808 Y -0.013 Z 157.849 Rz 120.254 Ry 128.839 Rx 5.246 J7 0.0 J8 0.0 J9 0.0 Sp 25 Ac 20 Dc 20 Rm 100 $ N
-Move J [*] X 448.886 Y 76.777 Z 266.048 Rz -4.013 Ry 80.713 Rx 7.593 J7 0.0 J8 0.0 J9 0.0 Sp 100 Ac 20 Dc 20 Rm 100 $ N
-Move J [*] X 448.901 Y 76.769 Z 33.808 Rz -3.992 Ry 80.694 Rx 7.589 J7 0.0 J8 0.0 J9 0.0 Sp 100 Ac 20 Dc 20 Rm 100 $ N
+Position Register 1 Element 3 = 100
+Move Vis [ PR: 1 ] [*] X 265.808 Y -0.013 Z 157.849 Rz 120.254 Ry 128.839 Rx 5.246 J7 0.0 J8 0.0 J9 0.0 Sp 100 Ac 20 Dc 20 Rm 100 $ N
+If Register # 10 = 1 : Jump to Tab 11
+Jump Tab-12
+Tab Number 11
+Move J [*] X 530.877 Y -303.356 Z 174.124 Rz 4.583 Ry 80.588 Rx 2.698 J7 0.0 J8 0.0 J9 0.0 Sp 100 Ac 20 Dc 20 Rm 100 $ F
 Servo number 0 to position: 100
+Jump Tab-0
+Tab Number 12
+Move J [*] X 589.767 Y -161.338 Z 174.124 Rz -5.604 Ry 80.791 Rx 14.663 J7 0.0 J8 0.0 J9 0.0 Sp 100 Ac 20 Dc 20 Rm 100 $ F
+Servo number 0 to position: 100
+Jump Tab-0
